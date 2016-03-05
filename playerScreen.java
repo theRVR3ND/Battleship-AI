@@ -10,7 +10,8 @@ public class playerScreen extends JPanel{
    
    private String[][] board;
    
-   private int[] shipLengths = {5, 4, 3, 3, 2};
+   private final String[] shipSymb = {"A", "B", "S", "C", "P"};
+   private final int[] shipLengths = { 5,   4,   3,   3,   2};
    private int placeR, placeC, shipRot, placeInd;              //shipRot: 1 = North, 2 = East, 3 = South, 4 = West
    private boolean initializing;
    
@@ -84,9 +85,9 @@ public class playerScreen extends JPanel{
       int placeRShift = 0, placeCShift = 0;
       
       if(keyCode == KeyEvent.VK_Q)
-         shipRotShift--;
-      else if(keyCode == KeyEvent.VK_E)
          shipRotShift++;
+      else if(keyCode == KeyEvent.VK_E)
+         shipRotShift--;
       else if(keyCode == KeyEvent.VK_W)
          placeRShift--;
       else if(keyCode == KeyEvent.VK_A)
@@ -102,6 +103,24 @@ public class playerScreen extends JPanel{
          placeR += placeRShift;
       }
       
+      if(keyCode == KeyEvent.VK_ENTER){
+         placeShip();
+         if(shipRot == 1 || shipRot == 3){
+            if(placeC < 9)
+               placeC++;
+            else
+               placeC--;
+         }else{//if(shipRot == 2 || shipRot == 4)
+            if(placeR < 9)
+               placeR++;
+            else
+               placeR--;
+         }
+         placeInd++;
+         if(placeInd == 5)
+            initializing = false;
+      }  
+      
       shipRot %= 4;
       if(placeR == -1)
          placeR = 0;
@@ -111,13 +130,6 @@ public class playerScreen extends JPanel{
          placeC = 0;
       else if(placeC == 10)
          placeC = 9;
-      
-      if(keyCode == KeyEvent.VK_ENTER){
-         placeShip();
-         placeInd++;
-         if(placeInd == 5)
-            initializing = false;
-      }  
    }
    
    public void fire(){
