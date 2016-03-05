@@ -16,6 +16,7 @@ public class BattleshipAI{
       frame.setSize(466, 913);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.addMouseMotionListener(new mouseListener());
+      frame.addMouseListener(new mouseEventListener());
       frame.setContentPane(player);
       frame.setVisible(true);
    }

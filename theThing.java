@@ -2,11 +2,11 @@ public class theThing{
    //The brain of BattleshipAI
    
    private final String[][] board;
-   private final String[] ships = {"A", 
-                                   "B", 
-                                   "S", 
-                                   "C", 
-                                   "P"};
+   private final String[] ships = {"Aircraft Carrier", 
+                                   "Battleship", 
+                                   "Submarine", 
+                                   "Cruiser", 
+                                   "Patrol Boat"};
    private final int[] lengths = {5, 4, 3, 3, 2};
    
    private String[][] hits;
@@ -52,7 +52,7 @@ public class theThing{
       */
    }
    
-   private boolean shotAt(int r, int c){
+   public boolean shotAt(int r, int c){
       if(board[r][c] != null){
          board[r][c] = null;
          return true;

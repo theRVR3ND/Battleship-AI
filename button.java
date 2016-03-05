@@ -1,35 +1,37 @@
 import java.awt.Graphics;
 import java.awt.Color;
 
-public class button{
+public class button extends gridSquare{
    
-   private final int x, y, w, h;
-   private final Color col;
-   private boolean highlighted;
+   private String fillType;
 
    public button(int xIn, int yIn, int wIn, int hIn, Color colIn){
-      x = xIn;
-      y = yIn;
-      w = wIn;
-      h = hIn;
-      col = colIn;
-      highlighted = false;
+      super(xIn, yIn, wIn, hIn, colIn);
+      fillType = "NONE";
    }
    
    public void draw(Graphics g){
-      g.setColor(col);
-      g.drawRect(x, y, w, h);
-      if(highlighted)
-         g.drawRect(x + 1, y + 1, w - 2, h - 2);
+      super.draw(g);
+      g.setColor(super.getCol());
+      if(fillType.equals("FILL"))
+         g.fillRect(super.getX(), super.getY(), super.getW(), super.getH());
+      else if(fillType.equals("HALF-FILL"))
+         for(int r = super.getY(); r < super.getY() + super.getH(); r++)
+            for(int c = super.getX() + r % 2; c < super.getX() + super.getW(); c += 2)
+               g.drawLine(c, r, c, r);
    }
    
    public void checkMouse(int xIn, int yIn){
-      if(xIn >= x && 
-         xIn <= x + w && 
-         yIn >= y && 
-         yIn <= y + h)
-         highlighted = true;
+      if(xIn >= super.getX() && 
+         xIn <= super.getX() + super.getW() && 
+         yIn >= super.getY() && 
+         yIn <= super.getY() + super.getH())
+         super.setHighlight(true);
       else
-         highlighted = false;
+         super.setHighlight(false);
+   }
+   
+   public void setFill(String modeIn){
+      fillType = modeIn;
    }
 }
