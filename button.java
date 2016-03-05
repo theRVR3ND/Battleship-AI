@@ -12,13 +12,15 @@ public class button extends gridSquare{
    
    public void draw(Graphics g){
       super.draw(g);
-      g.setColor(super.getCol());
+      
       if(fillType.equals("FILL"))
-         g.fillRect(super.getX(), super.getY(), super.getW(), super.getH());
-      else if(fillType.equals("HALF-FILL"))
-         for(int r = super.getY(); r < super.getY() + super.getH(); r++)
-            for(int c = super.getX() + r % 2; c < super.getX() + super.getW(); c += 2)
-               g.drawLine(c, r, c, r);
+         g.setColor(super.getCol());
+      else if(fillType.equals("SHADE-FILL"))
+         g.setColor(new Color(0, 255, 0, 125));
+      else//if(fillType.equals("NONE"))
+         return;
+         
+      g.fillRect(super.getX(), super.getY(), super.getW(), super.getH());   
    }
    
    public void checkMouse(int xIn, int yIn){

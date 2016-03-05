@@ -15,8 +15,11 @@ public class BattleshipAI{
       
       frame.setSize(466, 913);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      
       frame.addMouseMotionListener(new mouseListener());
       frame.addMouseListener(new mouseEventListener());
+      frame.addKeyListener(new keyListener());
+      
       frame.setContentPane(player);
       frame.setVisible(true);
    }
@@ -41,5 +44,16 @@ public class BattleshipAI{
       public void mouseClicked(MouseEvent e){
          BattleshipAI.player.fire();
       }
+   }
+   
+   public static class keyListener implements KeyListener{
+      public void keyPressed(KeyEvent e){
+         if(BattleshipAI.player.isInitializing())
+            BattleshipAI.player.keyPress(e.getKeyCode());
+      };
+      
+      public void keyReleased(KeyEvent e){};
+      
+      public void keyTyped(KeyEvent e){};
    }
 }
