@@ -6,10 +6,13 @@ public class BattleshipAI{
 
    public static Point mousePos = new Point(-10, -10);
    public static playerScreen player;
+   public static theThing AI;
    
    public static void main(String[] args){
       JFrame frame = new JFrame("The Glorious Battleship AI?");
       player = new playerScreen();
+      AI = new theThing();
+      
       frame.setSize(466, 913);
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.addMouseMotionListener(new mouseListener());

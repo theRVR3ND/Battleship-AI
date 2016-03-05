@@ -2,11 +2,11 @@ public class theThing{
    //The brain of BattleshipAI
    
    private final String[][] board;
-   private final String[] ships = {"Aircraft Carrier", 
-                                   "Battleship", 
-                                   "Submarine", 
-                                   "Cruiser", 
-                                   "Patrol Boat"};
+   private final String[] ships = {"A", 
+                                   "B", 
+                                   "S", 
+                                   "C", 
+                                   "P"};
    private final int[] lengths = {5, 4, 3, 3, 2};
    
    private String[][] hits;
@@ -24,10 +24,12 @@ public class theThing{
          int onR = tryR;
          int onC = tryC;
          
-         for(int l = 1; l < lengths[i]; l++){
-            if(tryBoard[onR][onC] != null)
+         for(int l = 0; l < lengths[i]; l++){
+            if(onR < 0 || onR >= 10 || onC < 0 || onC >= 10 || tryBoard[onR][onC] != null){
                tryBoard = removeAll(ships[i], tryBoard);
-            else
+               i--;
+               break;
+            }else
                tryBoard[onR][onC] = ships[i];
             
             if(isHorizontal)
@@ -38,6 +40,16 @@ public class theThing{
       }
       
       board = tryBoard;
+      /*
+      for(String[] row : board){
+         for(String on : row)
+            if(on != null)
+               System.out.print(on + " ");
+            else
+               System.out.print("  ");
+         System.out.println("");
+      }
+      */
    }
    
    private boolean shotAt(int r, int c){
@@ -51,7 +63,7 @@ public class theThing{
    private String[][] removeAll(String remove, String[][] removeFrom){
       for(int r = 0; r < removeFrom.length; r++)
          for(int c = 0; c < removeFrom[0].length; c++)
-            if(removeFrom[r][c].equals(remove))
+            if(removeFrom[r][c] != null && removeFrom[r][c].equals(remove))
                removeFrom[r][c] = null;
       return removeFrom;
    }
