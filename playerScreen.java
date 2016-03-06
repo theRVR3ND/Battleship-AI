@@ -2,6 +2,7 @@ import javax.swing.JPanel;
 import java.awt.Graphics;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
+import java.awt.Font;
 
 public class playerScreen extends JPanel{
    
@@ -13,7 +14,10 @@ public class playerScreen extends JPanel{
    private final String[] shipSymb = {"A", "B", "S", "C", "P"};
    private final int[] shipLengths = { 5,   4,   3,   3,   2};
    private int placeR, placeC, shipRot, placeInd;              //shipRot: 1 = North, 2 = East, 3 = South, 4 = West
+   private int numHits;
    private boolean initializing;
+   
+   private String message;
    
    public playerScreen(){
       gridFire = new button[10][10];
@@ -24,6 +28,8 @@ public class playerScreen extends JPanel{
       placeC = 0;
       shipRot = 1;
       initializing = true;
+      placeInd = 0;
+      numHits = 0;
       
       for(int r = 0; r < 10; r++){
          for(int c = 0; c < 10; c++){
@@ -72,8 +78,17 @@ public class playerScreen extends JPanel{
                glowC--;
          }
       }
+         //Draw message
+      if(message != null){
+         g.setFont(new Font("Times New Roman", Font.PLAIN, 12));
+         g.drawString(message, 0, 0);
+      }
       //
       repaint((long)(0.0001), 0, 0, 450, 875);
+   }
+   
+   public void setMessage(String in){
+      message = in;
    }
    
    public boolean isInitializing(){
@@ -105,17 +120,11 @@ public class playerScreen extends JPanel{
       
       if(keyCode == KeyEvent.VK_ENTER){
          placeShip();
-         if(shipRot == 1 || shipRot == 3){
-            if(placeC < 9)
-               placeC++;
-            else
-               placeC--;
-         }else{//if(shipRot == 2 || shipRot == 4)
-            if(placeR < 9)
-               placeR++;
-            else
-               placeR--;
-         }
+         do{
+            placeR = (int)(Math.random() * 10);
+            placeC = (int)(Math.random() * 10);
+            shipRot = (int)(Math.random() * 4 + 1);
+         }while(board[placeC][placeR] != null || ! checkShipPlace(placeR, placeC, shipRot));
          placeInd++;
          if(placeInd == 5)
             initializing = false;
@@ -139,15 +148,27 @@ public class playerScreen extends JPanel{
       int c = ((int)BattleshipAI.mousePos.getX() - 25) / 40;
       if(!(r >= 0 && r < 10 && c >= 0 && c < 10))
          return;
-      if(BattleshipAI.AI.shotAt(r, c))
+      if(BattleshipAI.AI.shotAt(r, c)){
          gridFire[r][c].setFill("FILL");
-      else
+         numHits++;
+         if(numHits == 17){
+            message = "I win(!)";
+            System.out.println("Player wins");
+         }
+      }else if(! gridFire[r][c].fillType().equals("FILL"))
          gridFire[r][c].setFill("SHADE-FILL");
+      message = null;
    }
    
    public boolean shotAt(int r, int c){
-      if(board[r][c] != null){
-         board[r][c] = null;
+      if(r < 0 || r >= 10 || c < 0 || c >= 10)
+         return false;
+      if(board[r][c] == null){
+         gridBoard[r][c].setFill("SHADE-FILL");
+         return false;
+      }else if(! board[r][c].equals("H")){
+         board[r][c] = "H";
+         gridBoard[r][c].setFill("FILL");
          return true;
       }
       return false;
